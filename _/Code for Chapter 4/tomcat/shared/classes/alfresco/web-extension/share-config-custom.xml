@@ -1,0 +1,203 @@
+<alfresco-config>
+   <!-- Global config section -->
+   <config replace="true">
+      <flags>
+         <!--
+            Developer debugging setting to turn on DEBUG mode for client scripts in the browser
+         -->
+         <client-debug>true</client-debug>
+
+         <!--
+            LOGGING can always be toggled at runtime when in DEBUG mode (Ctrl, Ctrl, Shift, Shift).
+            This flag automatically activates logging on page load.
+         -->
+         <client-debug-autologging>false</client-debug-autologging>
+      </flags>
+   </config>
+
+
+
+   <!-- Document Library config section -->
+   <config evaluator="string-compare" condition="DocumentLibrary">
+
+      <tree>
+         <!--
+            Whether the folder Tree component should enumerate child folders or not.
+            This is a relatively expensive operation, so should be set to "false" for Repositories with broad folder structures.
+         -->
+         <evaluate-child-folders>false</evaluate-child-folders>
+         
+         <!--
+            Optionally limit the number of folders shown in treeview throughout Share.
+         -->
+         <maximum-folder-count>-1</maximum-folder-count>
+      </tree>
+   
+      <types>
+         <type name="cm:content">
+             <subtype name="tc:supplierInvoice" />
+             <subtype name="tc:expenseReport" />
+         </type>
+
+
+         <type name="cm:folder">
+         </type>
+      </types>
+      <!--
+         Used by the "Manage Aspects" action
+
+         For custom aspects, remember to also add the relevant i18n string(s)
+            cm_myaspect=My Aspect
+      -->
+      <aspects>
+         <!-- Aspects that a user can see -->
+         <visible>
+            <aspect name="cm:generalclassifiable" />
+            <aspect name="cm:complianceable" />
+            <aspect name="cm:dublincore" />
+            <aspect name="cm:effectivity" />
+            <aspect name="cm:summarizable" />
+            <aspect name="cm:versionable" />
+            <aspect name="cm:templatable" />
+            <aspect name="cm:emailed" />
+            <aspect name="emailserver:aliasable" />
+            <aspect name="cm:taggable" />
+            <aspect name="app:inlineeditable" />
+         </visible>
+
+         <!-- Aspects that a user can add. Same as "visible" if left empty -->
+         <addable>
+         </addable>
+
+         <!-- Aspects that a user can remove. Same as "visible" if left empty -->
+         <removeable>
+         </removeable>
+      </aspects>
+
+   </config>
+   
+
+   <!-- Typical company Creation Forms -->
+   <config>
+      <forms>
+         <dependencies>
+            <css src="/custom/form/typical.css" />
+         </dependencies>
+      </forms>   
+   </config>
+   <config evaluator="node-type" condition="tc:supplierInvoice">
+      <forms>
+         <form>
+            <edit-form template="/2-column-edit-form.ftl" />
+            <field-visibility>
+               <hide id="sys:node-uuid" />
+               <hide id="sys:store-protocol" />
+               <hide id="sys:store-identifier" />
+               <hide id="sys:node-dbid" />
+               <hide id="cm:created" />
+               <hide id="cm:creator" />
+               <hide id="cm:modified" />
+               <hide id="cm:modifier" />
+               <hide id="cm:accessed" />
+               <hide id="cm:contains" />
+               <hide id="rma:identifier" />
+               <hide id="rma:dbUniquenessId" />              
+               <show id="cm:name" />
+               <show id="cm:title" force="true" />
+               <show id="cm:description" force="true" />
+               <show id="mimetype"  for-mode="view"  />
+               <show id="cm:author" force="true" />
+               <show id="tc:department" force="true" />
+               <show id="tc:region" force="true" />
+               <show id="tc:invVendor" />
+               <show id="tc:invNumber"  />
+               <show id="tc:invAmount"  />
+              
+            </field-visibility>
+
+            <appearance>
+               <set id="Invoice Documents" appearance="bordered-panel" label="Supplier Invoice" />
+               <field id="tc:region">
+                   <control template="controls/selectone.ftl">
+                       <control-param name="options">North East,MidWest,South,South West,West,Europe,Asia,South America</control-param>
+                    </control>
+               </field>
+               <field id="tc:invVendor" set="Invoice Documents" />
+               <field id="tc:invNumber" set="Invoice Documents" />
+               <field id="tc:invAmount" set="Invoice Documents" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+   
+   <config evaluator="node-type" condition="tc:expenseReport">
+      <forms>         
+         <form>
+            <edit-form template="/2-column-edit-form.ftl" />
+            <field-visibility>
+               <hide id="sys:node-uuid" />
+               <hide id="sys:store-protocol" />
+               <hide id="sys:store-identifier" />
+               <hide id="sys:node-dbid" />
+               <hide id="cm:created" />
+               <hide id="cm:creator" />
+               <hide id="cm:modified" />
+               <hide id="cm:modifier" />
+               <hide id="cm:accessed" />
+               <hide id="cm:contains" />
+               <hide id="rma:identifier" />
+               <hide id="rma:dbUniquenessId" />              
+               <show id="cm:name" />
+               <show id="cm:title" force="true" />
+               <show id="cm:description" force="true" />
+               <show id="mimetype"  for-mode="view"  />
+               <show id="cm:author" force="true" />
+               <show id="tc:department" force="true" />
+               <show id="tc:region" force="true" />
+               <show id="tc:expRptEmployee"  />
+               <show id="tc:expRptAmount" />
+              
+            </field-visibility>
+
+            <appearance>
+               <field id="tc:region">
+                   <control template="controls/selectone.ftl">
+                       <control-param name="options">North East,MidWest,South,South West,West,Europe,Asia,South America</control-param>
+                    </control>
+               </field>
+               <set id="Expense Reports" appearance="bordered-panel" label="Expense Reports" />
+               <field id="tc:expRptEmployee" set="Expense Reports" />
+               <field id="tc:expRptAmount" set="Expense Reports" />
+            </appearance>
+         </form>
+      </forms>
+   </config>
+   
+
+     <!-- Repository Library config section -->
+   <config evaluator="string-compare" condition="RepositoryLibrary" replace="true">
+      <!--
+         Whether the link to the Repository Library appears in the header component or not.
+      -->
+      <visible>true</visible>
+
+      <!--
+         Root nodeRef for top-level folder.
+      -->
+      <root-node>alfresco://company/home</root-node>
+
+      <tree>
+         <!--
+            Whether the folder Tree component should enumerate child folders or not.
+            This is a relatively expensive operation, so should be set to "false" for Repositories with broad folder structures.
+         -->
+         <evaluate-child-folders>false</evaluate-child-folders>
+         
+         <!--
+            Optionally limit the number of folders shown in treeview throughout Share.
+         -->
+         <maximum-folder-count>500</maximum-folder-count>
+      </tree>
+   </config>
+   
+</alfresco-config>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Definition of new Model -->
+
+<!-- The important part here is the name - Note: the use of the my: namespace
+     which is defined further on in the document -->
+<model name="tc:typicalcompany" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+   <!-- Optional meta-data about the model -->
+   <description>Typical Company Model</description>
+   <author>Dick Weisinger</author>
+   <version>1.0</version>
+
+   <!-- Imports are required to allow references to definitions in other models -->
+   <imports>
+   	  <!-- Import Alfresco Dictionary Definitions -->
+      <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+      <!-- Import Alfresco Content Domain Model Definitions -->
+      <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+   </imports>
+
+   <!-- Introduction of new namespaces defined by this model -->
+   <!-- NOTE: The following namespace my.new.model should be changed to reflect your own namespace -->
+   <namespaces>
+      <namespace uri="http://www.typicalcompany.com/model/content/1.0" prefix="tc"/>
+   </namespaces>
+   
+   <constraints>
+      <constraint name="tc:regionList" type="LIST">
+         <title>List of Company Regions</title>
+         <parameter name="allowedValues">
+            <list>
+               <value>North East</value>
+               <value>MidWest</value>
+               <value>South</value>
+               <value>South West</value>
+               <value>West</value>
+               <value>Europe</value>
+               <value>Asia</value>
+               <value>South America</value>
+            </list>
+         </parameter>
+         <parameter name="caseSensitive"><value>true</value></parameter>
+      </constraint>
+   </constraints>
+   
+   <types>
+
+      <type name="tc:generalDoc">
+         <title>General Document</title>
+         <parent>cm:content</parent>
+         <archive>true</archive>
+         <mandatory-aspects>
+            <aspect>cm:auditable</aspect>
+            <aspect>cm:titled</aspect>
+            <aspect>tc:companyInfo</aspect>
+         </mandatory-aspects>
+      </type>
+      
+      <type name="tc:admDoc">
+         <title>Administrative Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      <type name="tc:engDoc">
+         <title>Engineering Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      <type name="tc:finDoc">
+         <title>Financial Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      <type name="tc:hrDoc">
+         <title>Human Resource Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      <type name="tc:legDoc">
+         <title>Legal Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      <type name="tc:mfgDoc">
+         <title>Manufacturing Document</title>
+         <parent>tc:generalDoc</parent>
+      </type>
+      
+      <type name="tc:supplierInvoice">
+         <title>Supplier Invoice</title>
+         <parent>tc:finDoc</parent>
+         <properties>
+            <property name="tc:invVendor">
+               <title>Vendor for Invoice</title>
+               <type>d:text</type>
+               <mandatory>true</mandatory>
+               <index enabled="true">
+		   <atomic>true</atomic>
+		   <stored>false</stored>
+	           <tokenised>false</tokenised>
+	       </index>
+            </property>
+            <property name="tc:invNumber">
+               <title>Invoice Number</title>
+               <type>d:int</type>
+               <mandatory>true</mandatory>
+            </property>
+            <property name="tc:invAmount">
+               <title>Invoice Amount</title>
+               <type>d:double</type>
+               <mandatory>true</mandatory>
+            </property>
+        </properties>
+      </type>
+      
+      <type name="tc:expenseReport">
+         <title>Expense Report</title>
+         <parent>tc:finDoc</parent>
+         <properties>
+            <property name="tc:expRptEmployee">
+               <title>Employee Reporting Expense Report</title>
+               <type>d:text</type>
+               <mandatory>true</mandatory>
+               <index enabled="true">
+		          <atomic>true</atomic>
+		          <stored>false</stored>
+		          <tokenised>false</tokenised>
+		       </index>
+            </property>
+            <property name="tc:expRptAmount">
+               <title>Amount of Expense Report</title>
+               <type>d:double</type>
+               <mandatory>true</mandatory>
+            </property>
+        </properties>
+      </type>      
+  </types>  
+  
+  <aspects>
+      <aspect name="tc:companyInfo">
+         <title>Department/Region Source information</title>
+         <parent>cm:author</parent>
+         <properties>
+            <property name="tc:department">
+               <title>Department</title>
+               <type>d:mltext</type>
+               <index enabled="true">
+		    <atomic>true</atomic>
+		    <stored>false</stored>
+		    <tokenised>false</tokenised>
+	        </index>
+            </property>
+            <property name="tc:region">
+               <title>Region</title>
+               <type>d:text</type>
+	       <constraints>
+                  <constraint ref="tc:regionList" />
+               </constraints>
+            </property>
+        </properties>
+      </aspect>
+  </aspects>
+
+</model>

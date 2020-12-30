@@ -1,0 +1,27 @@
+.logoimg { 
+	background-color: #F9F9F9; 
+	color: #334433;
+    border: none; 
+    padding: 3px; 
+    } 
+.logoimg span { 
+	color: #334433;
+    font: 26px Arial, sans-serif; 
+    vertical-align:middle; 
+    } 
+.logoimg img { 
+	border: none; 
+    vertical-align:middle; 
+    margin-bottom: 3px; 
+    } 
+.logoright { 
+	margin: 0.5em 0pt 0.5em 0.8em; 
+	float:right; 
+	} 
+.logoleft { 
+	margin: 0.5em 0.8em 0.5em 0; 
+	float:left; 
+} 
+.freshstart {
+	clear: both;
+}
